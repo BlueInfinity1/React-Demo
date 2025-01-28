@@ -1,0 +1,118 @@
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  button {
+    padding: 10px 15px;
+    font-size: 1rem;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  select, input {
+    padding: 8px;
+    margin: 5px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+  }
+  
+  pre {
+    text-align: left;
+    background: #f4f4f4;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+    max-width: 600px;
+  }
+
+  .search-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 450px; /* Keeps it structured */
+    text-align: center;
+    margin: 20px auto;
+    padding-right: 30px; /* Adds right-side padding */
+  }
+  
+  
+  .results-container {
+    margin-top: 20px;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .json-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Adds space between each block */
+  }
+  
+  .result-block {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    text-align: left;
+  }
+  
+  .result-block h3 {
+    margin-top: 0;
+    color: #007bff;
+  }
+  
+  
+  
+  .results pre {
+    background: #f4f4f4;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 100%;
+    overflow-x: auto; /* Ensures long text wraps properly */
+    text-align: left;
+  }
+  
+  
+  .results-container h2 {
+    text-align: center;
+  }
+  
+  .results pre {
+    background: #f4f4f4;
+    padding: 15px; /* Add padding inside the box */
+    border-radius: 5px;
+    max-width: 100%;
+    width: 90%; /* Prevents it from expanding too far */
+    overflow-x: auto; /* Ensures scrolling instead of breaking layout */
+    text-align: left;
+    margin: 0 auto; /* Centers the pre block */
+    white-space: pre-wrap; /* Wraps text properly */
+    word-wrap: break-word; /* Ensures long words don't overflow */
+  }
+  
+  
+  
+  
+  
