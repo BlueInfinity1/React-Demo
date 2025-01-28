@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios"; // ✅ Added Axios
-import "./Search.css"; // Import styles
+import "./Search.css"; // Import styles /
 
 const mockDatabase = {
     patients: [
