@@ -4,8 +4,8 @@ A React-based search application that integrates with AWS API Gateway and Lambda
 
 ## Features
 
-- **Search for Patients** by insurance status, name, and gender.
-- **Search for Doctors** by specialty and location.
+- **Search for Patients** by insurance status.
+- **Search for Doctors** by specialty.
 - **Search for Visits** by date range, doctor specialty, and follow-up status.
 - **Live API Integration** using AWS API Gateway and Lambda.
 - **Modern UI** with CSS styling.
