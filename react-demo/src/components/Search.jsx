@@ -1,52 +1,50 @@
 import React, { useState } from "react";
-import axios from "axios"; // ✅ Added Axios
-import "./Search.css"; // Import styles /
-
-const mockDatabase = {
-    patients: [
-      { id: 1, name: "Alice", age: 30, gender: "Female", hasInsurance: true },
-      { id: 2, name: "Bob", age: 45, gender: "Male", hasInsurance: false },
-    ],
-    doctors: [
-      { id: 1, name: "Dr. Smith", specialty: "Cardiology", location: "New York" },
-      { id: 2, name: "Dr. Johnson", specialty: "Pediatrics", location: "California" },
-    ],
-    visits: [
-      { id: 1, patientId: 1, doctorId: 1, date: "2025-01-01", reason: "Heart checkup", followUp: true },
-      { id: 2, patientId: 2, doctorId: 2, date: "2025-01-15", reason: "Routine checkup", followUp: false },
-      { id: 3, patientId: 1, doctorId: 1, date: "2025-01-18", reason: "Cardio Exam", followUp: true },
-    ],
-  };
-  
+import axios from "axios";
+import "./Search.css"; 
 
 function Search() {
   const [entityType, setEntityType] = useState("patients");
-  const [criteria, setCriteria] = useState({});
+  const [criteria, setCriteria] = useState({
+    hasInsurance: false,  // Default to false
+  });
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // Function to fetch data from AWS API Gateway
   const fetchData = async () => {
     setLoading(true);
     setResults([]); // Clear previous results
 
-    setTimeout(() => {
-      let data = [];
-      if (entityType === "patients") {
-        data = mockDatabase.patients.filter((p) =>
-          criteria.hasInsurance ? p.hasInsurance : true
-        );
-      } else if (entityType === "doctors") {
-        data = mockDatabase.doctors;
-      } else if (entityType === "visits") {
-        data = mockDatabase.visits.filter(
-          (v) =>
-            (!criteria.startDate || v.date >= criteria.startDate) &&
-            (!criteria.endDate || v.date <= criteria.endDate)
-        );
-      }
-      setResults(data);
-      setLoading(false);
-    }, 1000);
+    // Prepare the query parameters
+    const params = {
+        table: entityType, // Lambda expects "table"
+    
+        // Patients Search Filters
+        ...(entityType === "patients" && criteria.hasInsurance !== undefined && { has_insurance: criteria.hasInsurance }),
+    
+        // Doctors Search Filters
+        ...(entityType === "doctors" && criteria.specialty && { specialty: criteria.specialty }),
+        // Name and location criteria can't currently be set up from the app UI
+        ...(entityType === "doctors" && criteria.name && { name: criteria.name }), 
+        ...(entityType === "doctors" && criteria.location && { location: criteria.location }), 
+    
+        // Visits Search Filters
+        ...(entityType === "visits" && criteria.startDate && { start_date: criteria.startDate }),
+        ...(entityType === "visits" && criteria.endDate && { end_date: criteria.endDate }),
+        ...(entityType === "visits" && criteria.specialty && { specialty: criteria.specialty }),
+        ...(entityType === "visits" && criteria.followUp !== undefined && { follow_up: criteria.followUp }),
+    };
+    
+
+    try {
+      console.log("Sending Query Params:", params);
+      const response = await axios.get("https://pppqz9gut3.execute-api.us-east-1.amazonaws.com/dev/search", { params });
+      setResults(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -62,10 +60,12 @@ function Search() {
       </div>
 
       <div className="form-group">
+        {/* Patients Search Filters */}
         {entityType === "patients" && (
           <label>
             <input
               type="checkbox"
+              checked={criteria.hasInsurance}
               onChange={(e) =>
                 setCriteria({ ...criteria, hasInsurance: e.target.checked })
               }
@@ -74,67 +74,68 @@ function Search() {
           </label>
         )}
 
+        {/* Doctors Search Filters */}
+        {entityType === "doctors" && (
+          <div className="form-group">
+            <label>Specialty:</label>
+            <select onChange={(e) => setCriteria({ ...criteria, specialty: e.target.value })}>
+              <option value="">Any</option>
+              <option value="Cardiology">Cardiology</option>
+              <option value="General Medicine">General Medicine</option>
+            </select>
+          </div>
+        )}
+
+        {/* Visits Search Filters */}
         {entityType === "visits" && (
-          <>
-            <label>Start Date: </label>
-            <input
-              type="date"
-              onChange={(e) =>
-                setCriteria({ ...criteria, startDate: e.target.value })
-              }
-            />
-            <label>End Date: </label>
-            <input
-              type="date"
-              onChange={(e) =>
-                setCriteria({ ...criteria, endDate: e.target.value })
-              }
-            />
-          </>
+          <div className="visits-filters">
+            <div className="form-group">
+              <label>Start Date:</label>
+              <input type="date" onChange={(e) => setCriteria({ ...criteria, startDate: e.target.value })} />
+            </div>
+
+            <div className="form-group">
+              <label>End Date:</label>
+              <input type="date" onChange={(e) => setCriteria({ ...criteria, endDate: e.target.value })} />
+            </div>
+
+            <div className="form-group">
+              <label>Doctor Specialty:</label>
+              <select onChange={(e) => setCriteria({ ...criteria, specialty: e.target.value })}>
+                <option value="">Any</option>
+                <option value="Cardiology">Cardiology</option>
+                <option value="General Medicine">General Medicine</option>
+              </select>
+            </div>
+
+            <div className="form-group checkbox-group">
+              <input type="checkbox" id="followUp" onChange={(e) => setCriteria({ ...criteria, followUp: e.target.checked })} />
+              <label htmlFor="followUp">Is a Follow-up Visit</label>
+            </div>
+          </div>
         )}
       </div>
 
       <button onClick={fetchData}>Search</button>
 
-      {/* 🟢 Structured Results Display */}
+      {/* Results displayed in individual boxes */}
       <div className="results-container">
         <h2>Results</h2>
         {loading ? (
           <p>Loading...</p>
+        ) : results.length > 0 ? (
+          results.map((item, index) => (
+            <div key={index} className="result-box">
+              {Object.entries(item).map(([key, value]) => (
+            <p key={key}>
+                {/* Format visit_date to remove time part */}
+                <strong>{key}:</strong> {key === "visit_date" ? value.split("T")[0] : String(value)}  
+            </p>
+            ))}
+            </div>
+          ))
         ) : (
-          <div className="json-container">
-            {results.length === 0 ? (
-              <p>No results found.</p>
-            ) : (
-              results.map((item) => (
-                <div key={item.id} className="result-block">
-                  {entityType === "patients" ? (
-                    <>
-                      <h3>{item.name}</h3>
-                      <p><strong>Age:</strong> {item.age}</p>
-                      <p><strong>Gender:</strong> {item.gender}</p>
-                      <p><strong>Has Insurance:</strong> {item.hasInsurance ? "Yes" : "No"}</p>
-                    </>
-                  ) : entityType === "doctors" ? (
-                    <>
-                      <h3>{item.name}</h3>
-                      <p><strong>Specialty:</strong> {item.specialty}</p>
-                      <p><strong>Location:</strong> {item.location}</p>
-                    </>
-                  ) : (
-                    <>
-                      <h3>Visit ID: {item.id}</h3>
-                      <p><strong>Patient ID:</strong> {item.patientId}</p>
-                      <p><strong>Doctor ID:</strong> {item.doctorId}</p>
-                      <p><strong>Date:</strong> {item.date}</p>
-                      <p><strong>Reason:</strong> {item.reason}</p>
-                      <p><strong>Follow-up:</strong> {item.followUp ? "Required" : "Not Required"}</p>
-                    </>
-                  )}
-                </div>
-              ))
-            )}
-          </div>
+          <p>No results found.</p>
         )}
       </div>
     </div>
