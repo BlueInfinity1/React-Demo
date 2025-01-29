@@ -2,6 +2,11 @@
 
 A React-based search application that integrates with AWS API Gateway and Lambda functions to query an RDS MySQL database. Users can search for patients, doctors, and visits with various filters.
 
+## Video
+
+Watch a demo clip of the application in action:  
+[React-Demo Video](https://drive.google.com/file/d/1-f66gDuHhonEIZo30lWSURFzfoib9ug9/view?usp=sharing)
+
 ## Features
 
 - **Search for Patients** by insurance status.
