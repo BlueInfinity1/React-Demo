@@ -15,7 +15,15 @@ function Search() {
     setLoading(true);
     setResults([]); // Clear previous results
 
-    // Prepare the query parameters
+    /* Prepare the query parameters.
+     *
+     * NOTE: We use a shorthand way for attaching parameters, so instead of writing
+     * if (entityType === "patients" && criteria.hasInsurance !== undefined) result.has_insurance = criteria.hasInsurance;
+     * we write 
+     * ...(entityType === "patients" && criteria.hasInsurance !== undefined && { has_insurance: criteria.hasInsurance })
+     * since this spreads the added parameter to the params object if the two conditions evaluate to true.
+     */
+
     const params = {
         table: entityType, // Lambda expects "table"
     
