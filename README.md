@@ -2,10 +2,12 @@
 
 A React-based search application that integrates with AWS API Gateway and Lambda functions to query an RDS MySQL database. Users can search for patients, doctors, and visits with various filters — and now, book appointments by selecting available time slots.
 
-## Video
+## Videos
 
-Watch a demo clip of the application in action:  
+Watch the following demo clips of the application in action:  
+
 [React-Demo Current Version, Appointment Booking](https://drive.google.com/file/d/1U_k-SHMMOZR6EPpXF8wPQaW-Shf_FBzg/view?usp=sharing)
+
 [React-Demo Version 1, Using the Search Function](https://drive.google.com/file/d/1-f66gDuHhonEIZo30lWSURFzfoib9ug9/view?usp=sharing)
 
 ## Features
