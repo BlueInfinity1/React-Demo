@@ -12,3 +12,50 @@
 .read-the-docs {
   color: #888;
 }
+
+.button-container {
+  display: flex;
+  flex-direction: column;  /* Stack buttons vertically */
+  align-items: center;  /* Center them horizontally */
+  gap: 10px;  /* Add spacing between buttons */
+}
+
+.button-container button {
+  width: 250px; /* Set a fixed width for buttons */
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.book-appointment-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.form-group {
+  margin: 15px 0;
+}
+
+select, input {
+  padding: 10px;
+  margin: 5px;
+  font-size: 16px;
+}
+
+.available {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  margin: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.occupied {
+  background-color: #ccc;
+  color: #666;
+  padding: 10px;
+  margin: 5px;
+  border: none;
+  cursor: not-allowed;
+}
