@@ -1,6 +1,6 @@
-## React-Demo
+# React-Demo
 
-A React-based search application that integrates with AWS API Gateway and Lambda functions to query an RDS MySQL database. Users can search for patients, doctors, and visits with various filters.
+A React-based search application that integrates with AWS API Gateway and Lambda functions to query an RDS MySQL database. Users can search for patients, doctors, and visits with various filters — and now, book appointments by selecting available time slots.
 
 ## Video
 
@@ -14,7 +14,8 @@ Watch a demo clip of the application in action:
 - **Search for Visits** by date range, doctor specialty, and follow-up status.
 - **Live API Integration** using AWS API Gateway and Lambda.
 - **Modern UI** with CSS styling.
-
+- **Book Appointments:**  
+  Select a doctor, patient, choose a date, and view available time slots in real time. Upon confirmation, the appointment is booked and the UI immediately reflects the change.
 
 ## Database Schema
 
@@ -38,3 +39,18 @@ Watch a demo clip of the application in action:
 - `visit_date` (DATE) – Date of the visit.
 - `reason` (TEXT) – Reason for the visit.
 - `follow_up` (BOOLEAN) – Indicates if a follow-up is required.
+
+### Time Slots Table
+- **Primary Key:** Composite key (`doctor_id` + `start_time`).
+- `doctor_id` (INT, Foreign Key) – References `doctors(id)`.
+- `start_time` (DATETIME) – The start time of the slot.
+- `end_time` (DATETIME) – The end time of the slot.
+- `patient_id` (INT, Foreign Key, Nullable) – References `patients(id)` if the slot is booked.
+- `created_at` (DATETIME) – Timestamp when the slot was created.
+
+### Appointments Table
+- **Primary Key:** Composite key (`doctor_id` + `start_time`).
+- `doctor_id` (INT, Foreign Key) – References `doctors(id)`.
+- `patient_id` (INT, Foreign Key) – References `patients(id)`.
+- `start_time` (DATETIME) – The appointment start time.
+- `created_at` (DATETIME) – Timestamp when the appointment was booked.
