@@ -17,8 +17,8 @@ Watch the following demo clips of the application in action:
 - **Search for Visits** by date range, doctor specialty, and follow-up status.
 - **Live API Integration** using AWS API Gateway and Lambda.
 - **Modern UI** with CSS styling.
-- **Book Appointments:**  
-  Select a doctor, patient, choose a date, and view available time slots in real time. Upon confirmation, the appointment is booked and the UI immediately reflects the change.
+- **Book Appointments:** Select a doctor, patient, choose a date, and view available time slots in real time. Upon confirmation, the appointment is booked and the UI immediately reflects the change.
+- **Scheduled Time Slot Generation:** Every 24 hours, a scheduled **cron job** runs an AWS Lambda function to open a new day for booking and automatically populate it with free time slots for all doctors.
 
 ## Database Schema
 
