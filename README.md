@@ -57,3 +57,16 @@ Watch the following demo clips of the application in action:
 - `patient_id` (INT, Foreign Key) – References `patients(id)`.
 - `start_time` (DATETIME) – The appointment start time.
 - `created_at` (DATETIME) – Timestamp when the appointment was booked.
+
+## Notes on the Database Schema
+
+The main purpose of the `Appointments` table is to keep a historical record of all appointments, whether booked, canceled or rescheduled.
+
+I'm aware that the schema includes **denormalization and some redundancy** (storing `patient_id` and `start_time` in both `time_slots` and `appointments`). 
+
+This is an intentional choice to:
+- Optimize **real-time availability checks** (`WHERE patient_id IS NULL` for open slots).
+- Simplify **booking and cancellation logic** without complex joins.
+- Ensure **appointment history tracking** remains intact even after cancellations.
+
+This structure prioritizes **performance and ease of use** over strict normalization.
