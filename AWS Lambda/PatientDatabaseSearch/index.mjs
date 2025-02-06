@@ -5,16 +5,12 @@ export const handler = async (event) => {
 
     // This Lambda is specifically for this demo project, so we do not separate environments into dev, test, staging, or prod.
 
-    // The database login credentials (including password) are hardcoded here. 
-    // In a production environment, it’s recommended to use AWS Secrets Manager to securely store and retrieve these credentials. 
-    // Alternatively, for Amazon RDS (Aurora MySQL), IAM Authentication can be used to avoid storing static passwords altogether.
-
     // Connect to MySQL
     const connection = await mysql.createConnection({
-        host: 'patients-database-instance-1.xxxxxxxxxxxx.us-east-1.rds.amazonaws.com', // Not the real host
-        user: 'admin',
-        password: 'not-so-safe-hardcoded-password', // Not the real password
-        database: 'patients_database'
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
     });
 
     try {

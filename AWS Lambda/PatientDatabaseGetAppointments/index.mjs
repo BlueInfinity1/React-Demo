@@ -17,10 +17,10 @@ export const handler = async (event) => {
     }
 
     const connection = await mysql.createConnection({
-        host: 'patients-database-instance-1.cha680k884mq.us-east-1.rds.amazonaws.com', // Replace with actual host
-        user: 'admin',
-        password: 'LwWtkzuBVhyqsQ9wu7A1', // Replace with actual password
-        database: 'patients_database'
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
     });
 
     try {
