@@ -4,7 +4,6 @@ on:
   push:
     branches: [main, GitHub-Actions-Workflow]
 
-
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -20,9 +19,12 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: "./react-demo"
 
       - name: Run tests
         run: npm test -- --watchAll=false
+        working-directory: "./react-demo"
 
       - name: Build Vite project
         run: npm run build
+        working-directory: "./react-demo"
